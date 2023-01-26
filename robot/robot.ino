@@ -18,6 +18,9 @@ struct Direction
   
   private:
     const int pin;
+
+    Direction& operator=(Direction&) = delete;
+    Direction(Direction&) = delete;
 };
 
 constexpr int FORWARD = A3;
@@ -25,11 +28,15 @@ constexpr int LEFT = A2;
 constexpr int RIGHT = A1;
 constexpr int REVERSE = A0;
 
+struct Ctrl
+{
+  Ctrl(const int pinForward, const int pinLeft, const int pinRight, const int pinReverse)
+  {
+  }
+};
+
 void setup() {
   // put your setup code here, to run once:
-  reverse.on();
-  delay(1000);
-  reverse.off();
 }
 
 
