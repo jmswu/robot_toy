@@ -30,11 +30,24 @@ struct Ctrl {
     : forward(Direction{ pinForward }), left(Direction{ pinLeft }), right(Direction{ pinRight }), reverse(Direction{ pinReverse }) {
   }
 
-  void up(unsigned sec) {
+  void up(const unsigned sec) {
     forward.on();
     delay_sec(sec);
     forward.off();
   }
+
+  void down(const unsigned sec){
+    reverse.on();
+    delay_sec(sec);
+    reverse.off();    
+  }
+
+  void left(const unsigned sec){
+    left.on();
+    delay_sec(sec);
+    left.off();
+  }
+  
 private:
   Direction forward;
   Direction left;
