@@ -31,31 +31,19 @@ struct Ctrl {
   }
 
   void up(const unsigned sec) {
-    forward.on();
-    delay_sec(sec);
-    forward.off();
-    delay(DELAY_CROSSOVER);
+    move(forward, sec);
   }
 
   void down(const unsigned sec) {
-    reverse.on();
-    delay_sec(sec);
-    reverse.off();
-    delay(DELAY_CROSSOVER);
+    move(reverse, sec);
   }
 
   void turnLeft(const unsigned sec) {
-    left.on();
-    delay_sec(sec);
-    left.off();
-    delay(DELAY_CROSSOVER);
+    move(left, sec);
   }
 
   void turnRight(const unsigned sec) {
-    right.on();
-    delay_sec(sec);
-    right.off();
-    delay(DELAY_CROSSOVER);
+    move(right, sec);
   }
 
 private:
@@ -65,7 +53,14 @@ private:
   Direction reverse;
 
   static constexpr unsigned DELAY_CROSSOVER = 200;
-  
+
+  void move(const Direction& dir, const unsigned sec) {
+    dir.on();
+    delay_sec(sec);
+    dir.off();
+    delay(DELAY_CROSSOVER);
+  }
+
   void delay_sec(unsigned sec) {
     constexpr unsigned ONE_SEC = 1000;
     delay(sec * ONE_SEC);
@@ -76,7 +71,7 @@ Ctrl ctrl{ FORWARD, LEFT, RIGHT, REVERSE };
 
 void setup() {
   // put your setup code here, to run once:
-  ctrl.turnRight(1);
+  ctrl.up(1);
 }
 
 
