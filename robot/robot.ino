@@ -36,7 +36,11 @@ struct Ctrl {
 
   void down(const unsigned sec) {
     move(reverse, sec);
-    revDown(reverse, 10);
+    for (int i = 9; i > 6; i--) {
+      pwm(reverse, i);
+      pwm(reverse, i);
+      pwm(reverse, i);
+    }
   }
 
   void turnLeft(const unsigned sec) {
@@ -48,22 +52,7 @@ struct Ctrl {
   }
 
   void test() {
-    const unsigned val = 7;
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
-    pwm(reverse, val);
+    down(2);
   }
 
 private:
@@ -78,7 +67,6 @@ private:
     dir.on();
     delay_sec(sec);
     dir.off();
-    delay(DELAY_CROSSOVER);
   }
 
   void revDown(const Direction& dir, const unsigned step) {
@@ -91,9 +79,12 @@ private:
   }
 
   void pwm(Direction& dir, const unsigned val) {
-    const unsigned onVal = val;
-    const unsigned offVal = 10 - onVal;
-    for (unsigned i = 0; i < 10; i++) {
+
+    constexpr unsigned MAX_PWM = 10;
+    const unsigned onVal = (val > MAX_PWM) ? MAX_PWM : val;
+
+    const unsigned offVal = MAX_PWM - onVal;
+    for (unsigned i = 0; i < MAX_PWM; i++) {
       dir.on();
       delay(onVal);
       dir.off();
