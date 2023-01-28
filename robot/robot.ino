@@ -36,11 +36,7 @@ struct Ctrl {
 
   void down(const unsigned sec) {
     move(reverse, sec);
-    for (int i = 9; i > 6; i--) {
-      pwm(reverse, i);
-      pwm(reverse, i);
-      pwm(reverse, i);
-    }
+    revDown(reverse, 9, 7);
   }
 
   void turnLeft(const unsigned sec) {
@@ -61,7 +57,7 @@ private:
   Direction right;
   Direction reverse;
 
-  static constexpr unsigned DELAY_CROSSOVER = 200;
+  static constexpr unsigned MAX_PWM = 10;
 
   void move(const Direction& dir, const unsigned sec) {
     dir.on();
@@ -69,20 +65,20 @@ private:
     dir.off();
   }
 
-  void revDown(const Direction& dir, const unsigned step) {
-    for (unsigned i = 0; i < step; i++) {
-      dir.on();
-      delay(1);
-      dir.off();
-      delay(1);
+  void revDown(const Direction& dir, const unsigned start, const unsigned stop) {
+
+    if (start < stop) return;
+    if (start > MAX_PWM) return;
+
+    for (int i = start; i >= stop; i--) {
+      pwm(dir, i);
+      pwm(dir, i);
+      pwm(dir, i);
     }
   }
 
-  void pwm(Direction& dir, const unsigned val) {
-
-    constexpr unsigned MAX_PWM = 10;
+  void pwm(const Direction& dir, const unsigned val) {
     const unsigned onVal = (val > MAX_PWM) ? MAX_PWM : val;
-
     const unsigned offVal = MAX_PWM - onVal;
     for (unsigned i = 0; i < MAX_PWM; i++) {
       dir.on();
